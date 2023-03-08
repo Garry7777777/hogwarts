@@ -19,11 +19,6 @@ public class HouseController {
         this.houseService = houseService;
     }
 
-    @PostMapping
-    public ResponseEntity<Faculty> createFaculty(@RequestBody Faculty faculty) {
-        return ResponseEntity.ok(houseService.createFaculty(faculty));
-    }
-
     @GetMapping("{id}")
     public ResponseEntity<Faculty> getFaculty(@PathVariable Long id) {
         Faculty faculty = houseService.findFaculty(id);
@@ -31,8 +26,13 @@ public class HouseController {
         return ResponseEntity.ok(faculty);
     }
 
-    @PatchMapping
-    public ResponseEntity<Faculty> updateFaculty(@RequestBody Faculty faculty) {
+    @PostMapping
+    public ResponseEntity<Faculty> createFaculty(@RequestBody Faculty faculty) {
+        return ResponseEntity.ok(houseService.createFaculty(faculty));
+    }
+
+    @PutMapping
+    public ResponseEntity<Faculty> editFaculty(@RequestBody Faculty faculty) {
         Faculty editFaculty = houseService.editFaculty(faculty);
         if (editFaculty == null) return ResponseEntity.badRequest().build();
         return ResponseEntity.ok(editFaculty);
