@@ -22,8 +22,8 @@ public class StudentService {
         return null;
     }
 
-    public Student editStudent(Student faculty) {
-        if (students.containsKey(faculty.getId())) return students.put(faculty.getId(), faculty);
+    public Student editStudent(Student students) {
+        if (students.containsKey(students.getId())) return students.put(students.getId(), students);
         return null;
     }
 
