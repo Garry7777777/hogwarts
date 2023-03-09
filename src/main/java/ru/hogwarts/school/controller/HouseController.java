@@ -6,25 +6,14 @@ import org.springframework.web.bind.annotation.*;
 import ru.hogwarts.school.model.Faculty;
 import ru.hogwarts.school.service.HouseService;
 import java.util.Collection;
-import java.util.stream.Collectors;
+
 
 @RestController
 @RequestMapping("/faculty")
 public class HouseController {
 
-    private final HouseService houseService;
-
     @Autowired
-    public HouseController(HouseService houseService) {
-        this.houseService = houseService;
-    }
-
-    @GetMapping("{id}")
-    public ResponseEntity<Faculty> getFaculty(@PathVariable Long id) {
-        Faculty faculty = houseService.findFaculty(id);
-        if (faculty == null) return ResponseEntity.notFound().build();
-        return ResponseEntity.ok(faculty);
-    }
+    private  HouseService houseService;
 
     @PostMapping
     public ResponseEntity<Faculty> createFaculty(@RequestBody Faculty faculty) {
@@ -39,17 +28,19 @@ public class HouseController {
     }
 
     @DeleteMapping("{id}")
-    public ResponseEntity<Faculty> deleteFaculty(@PathVariable Long id) {
-        Faculty deletedFaculty = houseService.deleteFaculty(id);
-        if (deletedFaculty == null) return ResponseEntity.badRequest().build();
-        return ResponseEntity.ok(deletedFaculty);
+    public ResponseEntity deleteFaculty(@PathVariable long id) {
+        houseService.deleteFaculty(id);
+        return ResponseEntity.ok().build();
     }
 
+    @GetMapping("{id}")
+    public ResponseEntity<Faculty> getFaculty(@PathVariable Long id) {
+        return ResponseEntity.ok(houseService.findFaculty(id));
+    }
     @GetMapping
-    public ResponseEntity<Collection<Faculty>> getFacultiesByColor(@RequestParam String color) {
-        return ResponseEntity.ok(houseService.getFaculties().stream()
-                .filter(fac -> fac.getColor().equals(color))
-                .collect(Collectors.toList()));
+    public ResponseEntity<Collection<Faculty>> getFacultiesByColor(@RequestParam(required = false) String color) {
+        if (color == null) return ResponseEntity.ok(houseService.getFaculties());
+        return ResponseEntity.ok(houseService.getFacultyByColor(color));
     }
 
 }

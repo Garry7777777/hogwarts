@@ -6,24 +6,13 @@ import org.springframework.web.bind.annotation.*;
 import ru.hogwarts.school.model.Student;
 import ru.hogwarts.school.service.StudentService;
 import java.util.Collection;
-import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/student")
 public class StudentController {
 
-    private final StudentService studentService;
-
     @Autowired
-    public StudentController(StudentService studentService) {
-        this.studentService = studentService;
-    }
-
-    @GetMapping("{id}")
-    public ResponseEntity<Student> getStudent(@PathVariable Long id) {
-        if (studentService.findStudent(id) == null) return ResponseEntity.notFound().build();
-        return ResponseEntity.ok(studentService.findStudent(id));
-    }
+    private  StudentService studentService;
 
     @PostMapping
     public ResponseEntity<Student> createStudent(@RequestBody Student student) {
@@ -38,17 +27,20 @@ public class StudentController {
     }
 
     @DeleteMapping("{id}")
-    public ResponseEntity<Student> deleteStudent(@PathVariable Long id) {
-        Student student = studentService.deleteStudent(id);
-        if (student == null) return ResponseEntity.badRequest().build();
-        return ResponseEntity.ok(student);
+    public ResponseEntity deleteStudent(@PathVariable Long id) {
+        studentService.deleteStudent(id);
+        return ResponseEntity.ok().build();
+    }
+    @GetMapping("{id}")
+    public ResponseEntity<Student> getStudent(@PathVariable Long id) {
+        if (studentService.findStudent(id) == null) return ResponseEntity.notFound().build();
+        return ResponseEntity.ok(studentService.findStudent(id));
     }
 
     @GetMapping
-    public ResponseEntity< Collection<Student>> getStudentsByAge(@RequestParam int age) {
-        return ResponseEntity.ok(studentService.getStudents().stream()
-                                               .filter(st -> st.getAge() == age)
-                                               .collect(Collectors.toList()));
+    public ResponseEntity<Collection<Student>> getStudentsByAge(@RequestParam(required = false) Integer age) {
+        if (age == null) return ResponseEntity.ok(studentService.getStudents());
+        return ResponseEntity.ok(studentService.getStudentsByAge(age));
     }
 
 }
