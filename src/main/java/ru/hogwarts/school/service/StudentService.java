@@ -12,10 +12,23 @@ public class StudentService {
 
     @Autowired
     StudentRepository studentRepository;
-    public Student createStudent(Student student){return studentRepository.save(student);}
-    public Student findStudent(long id){return studentRepository.findById(id).get();}
-    public Student editStudent(Student student){return studentRepository.save(student);}
-    public void deleteStudent(Long id) {studentRepository.deleteById(id);}
-    public Collection<Student> getStudents(){return studentRepository.findAll();}
-    public Collection<Student> getStudentsByAge(int age) {return studentRepository.findByAge(age);}
+    
+    public Student createStudent(Student student){
+        return studentRepository.save(student);
+    }
+    public Student findStudent(long id){
+        return studentRepository.findById(id).get();
+    }
+    public Student editStudent(Student student){
+        return studentRepository.save(student);
+    }
+    public void deleteStudent(Long id){
+        studentRepository.deleteById(id);
+    }
+    public Collection<Student> getStudents(){
+        return studentRepository.findAll();
+    }
+    public Collection<Student> getStudentsByAge(int age) {
+        return studentRepository.findByAge(age);
+    }
 }
