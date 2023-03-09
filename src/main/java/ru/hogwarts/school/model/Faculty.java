@@ -3,6 +3,7 @@ package ru.hogwarts.school.model;
 import lombok.Data;
 import javax.persistence.*;
 
+
 @Entity
 @Data
 public class Faculty {

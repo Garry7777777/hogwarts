@@ -12,6 +12,7 @@ import java.util.Collection;
 @RequestMapping("/faculty")
 public class HouseController {
 
+
     @Autowired
     private  HouseService houseService;
 
