@@ -2,6 +2,7 @@ package ru.hogwarts.school.DTO;
 
 
 import lombok.Data;
+import org.springframework.beans.BeanUtils;
 import ru.hogwarts.school.model.Faculty;
 
 
@@ -13,17 +14,13 @@ public class FacultyDTO {
     private String color;
 
     public static FacultyDTO fromFaculty(Faculty faculty){
-        FacultyDTO dto = new FacultyDTO();
-        dto.setId(faculty.getId());
-        dto.setName(faculty.getName());
-        dto.setColor(faculty.getColor());
+        var dto = new FacultyDTO();
+        BeanUtils.copyProperties(faculty, dto);
         return dto;
     }
     public Faculty toFaculty(){
         Faculty faculty = new Faculty();
-        faculty.setId(this.getId());
-        faculty.setName(this.getName());
-        faculty.setColor(this.getColor());
+        BeanUtils.copyProperties(this, faculty);
         return faculty;
     }
 

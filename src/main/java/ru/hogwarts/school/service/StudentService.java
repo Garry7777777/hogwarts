@@ -22,32 +22,30 @@ public class StudentService {
         student.setFaculty(facultyRepository.findById(studentDTO.getFacultyId()).get());
         return StudentDTO.fromStudent(studentRepository.save(student));
     }
+    public StudentDTO editStudent(StudentDTO studentDTO){
+        return StudentDTO.fromStudent(studentRepository.save(studentDTO.toStudent()));
+    }
     public StudentDTO findStudent(long id){
         return StudentDTO.fromStudent(studentRepository.findById(id).get());
     }
-    public StudentDTO editStudent(StudentDTO studentDTO){
-        Student student = studentDTO.toStudent();
-        student.setFaculty(facultyRepository.findById(studentDTO.getFacultyId()).get());
-        return StudentDTO.fromStudent(studentRepository.save(student));
-    }
-    public void deleteStudent(Long id) {
-        studentRepository.deleteById(id);
-    }
+    public void deleteStudent(Long id) { studentRepository.deleteById(id);}
+
+
+
     public Collection<StudentDTO> getStudents(){
-        return studentRepository.findAll().
-                stream().map(StudentDTO::fromStudent).collect(Collectors.toList());
+        return studentRepository.findAll().stream().map(StudentDTO::fromStudent).collect(Collectors.toList());
     }
     public Collection<StudentDTO> getStudentsByAge(int age){
-        return studentRepository.findByAge(age).
-                stream().map(StudentDTO::fromStudent).collect(Collectors.toList());
+        return studentRepository.findByAge(age).stream().map(StudentDTO::fromStudent).collect(Collectors.toList());
     }
     public Collection<StudentDTO> getStudentsByAges(int min, int max){
-        return studentRepository.findByAgeBetween(min, max).
-                stream().map(StudentDTO::fromStudent).collect(Collectors.toList());
+        return studentRepository.findByAgeBetween(min, max).stream().map(StudentDTO::fromStudent).collect(Collectors.toList());
     }
 
+
     public FacultyDTO getFacultyByStudentId(Long id) {
-        StudentDTO studentDTO = StudentDTO.fromStudent(studentRepository.findById(id).get());
-        return FacultyDTO.fromFaculty(facultyRepository.findById(studentDTO.getFacultyId()).get());
+        return FacultyDTO.fromFaculty(facultyRepository.findById(
+                StudentDTO.fromStudent(studentRepository.findById(id).get() ).getFacultyId() ).get());
+
     }
 }

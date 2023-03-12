@@ -55,8 +55,7 @@ public class HouseController {
     }
     @GetMapping("{id}/students")
     public ResponseEntity<List<StudentDTO>> getStudentsByFacultyId(@PathVariable Long id){
-        List<StudentDTO> students = houseService.getStudentsByFacultyId(id);
-        return ResponseEntity.ok(students);
+        return ResponseEntity.ok(houseService.getStudentsByFacultyId(id));
     }
 
 }
