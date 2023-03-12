@@ -2,9 +2,11 @@ package ru.hogwarts.school.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import ru.hogwarts.school.model.Student;
-import ru.hogwarts.school.repository.StudentRepository;
+import ru.hogwarts.school.DTO.*;
+import ru.hogwarts.school.model.*;
+import ru.hogwarts.school.repository.*;
 import java.util.*;
+import java.util.stream.Collectors;
 
 
 @Service
@@ -12,10 +14,40 @@ public class StudentService {
 
     @Autowired
     StudentRepository studentRepository;
-    public Student createStudent(Student student){return studentRepository.save(student);}
-    public Student findStudent(long id){return studentRepository.findById(id).get();}
-    public Student editStudent(Student student){return studentRepository.save(student);}
-    public void deleteStudent(Long id) {studentRepository.deleteById(id);}
-    public Collection<Student> getStudents(){return studentRepository.findAll();}
-    public Collection<Student> getStudentsByAge(int age) {return studentRepository.findByAge(age);}
+    @Autowired
+    FacultyRepository facultyRepository;
+
+    public StudentDTO createStudent(StudentDTO studentDTO){
+        Student student = studentDTO.toStudent();
+        student.setFaculty(facultyRepository.findById(studentDTO.getFacultyId()).get());
+        return StudentDTO.fromStudent(studentRepository.save(student));
+    }
+    public StudentDTO findStudent(long id){
+        return StudentDTO.fromStudent(studentRepository.findById(id).get());
+    }
+    public StudentDTO editStudent(StudentDTO studentDTO){
+        Student student = studentDTO.toStudent();
+        student.setFaculty(facultyRepository.findById(studentDTO.getFacultyId()).get());
+        return StudentDTO.fromStudent(studentRepository.save(student));
+    }
+    public void deleteStudent(Long id) {
+        studentRepository.deleteById(id);
+    }
+    public Collection<StudentDTO> getStudents(){
+        return studentRepository.findAll().
+                stream().map(StudentDTO::fromStudent).collect(Collectors.toList());
+    }
+    public Collection<StudentDTO> getStudentsByAge(int age){
+        return studentRepository.findByAge(age).
+                stream().map(StudentDTO::fromStudent).collect(Collectors.toList());
+    }
+    public Collection<StudentDTO> getStudentsByAges(int min, int max){
+        return studentRepository.findByAgeBetween(min, max).
+                stream().map(StudentDTO::fromStudent).collect(Collectors.toList());
+    }
+
+    public FacultyDTO getFacultyByStudentId(Long id) {
+        StudentDTO studentDTO = StudentDTO.fromStudent(studentRepository.findById(id).get());
+        return FacultyDTO.fromFaculty(facultyRepository.findById(studentDTO.getFacultyId()).get());
+    }
 }

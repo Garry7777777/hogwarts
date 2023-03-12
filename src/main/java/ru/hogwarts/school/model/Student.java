@@ -13,4 +13,6 @@ public class Student {
     private long id;
     private String name;
     private int age;
+    @ManyToOne(fetch = FetchType.LAZY)
+    private Faculty faculty;
 }

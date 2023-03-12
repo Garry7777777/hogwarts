@@ -3,6 +3,8 @@ package ru.hogwarts.school.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import ru.hogwarts.school.DTO.FacultyDTO;
+import ru.hogwarts.school.DTO.StudentDTO;
 import ru.hogwarts.school.model.Student;
 import ru.hogwarts.school.service.StudentService;
 import java.util.Collection;
@@ -16,13 +18,13 @@ public class StudentController {
     private  StudentService studentService;
 
     @PostMapping
-    public ResponseEntity<Student> createStudent(@RequestBody Student student) {
-        return ResponseEntity.ok(studentService.createStudent(student));
+    public ResponseEntity<StudentDTO> createStudent(@RequestBody StudentDTO studentDTO) {
+        return ResponseEntity.ok(studentService.createStudent(studentDTO));
     }
 
     @PutMapping
-    public ResponseEntity<Student> editStudent(@RequestBody Student student) {
-        Student editStudent = studentService.editStudent(student);
+    public ResponseEntity<StudentDTO> editStudent(@RequestBody StudentDTO studentDTO ) {
+        StudentDTO editStudent = studentService.editStudent(studentDTO);
         if (editStudent == null) return ResponseEntity.badRequest().build();
         return ResponseEntity.ok(editStudent);
     }
@@ -33,15 +35,28 @@ public class StudentController {
         return ResponseEntity.ok().build();
     }
     @GetMapping("{id}")
-    public ResponseEntity<Student> getStudent(@PathVariable Long id) {
+    public ResponseEntity<StudentDTO> getStudent(@PathVariable Long id) {
         if (studentService.findStudent(id) == null) return ResponseEntity.notFound().build();
         return ResponseEntity.ok(studentService.findStudent(id));
     }
 
     @GetMapping
-    public ResponseEntity<Collection<Student>> getStudentsByAge(@RequestParam(required = false) Integer age) {
-        if (age == null) return ResponseEntity.ok(studentService.getStudents());
-        return ResponseEntity.ok(studentService.getStudentsByAge(age));
+    public ResponseEntity<Collection<StudentDTO>> getStudentsByAge(@RequestParam(required = false) Integer age,
+                                                                @RequestParam(required = false) Integer min,
+                                                                @RequestParam(required = false) Integer max) {
+        if (age == null & min == null & max == null)
+                return ResponseEntity.ok(studentService.getStudents());  // нет параметров
+        if (age != null & min == null & max == null)
+                return ResponseEntity.ok(studentService.getStudentsByAge(age)); // один параметр
+        if (age == null & min!=null & max!=null)
+                return ResponseEntity.ok(studentService.getStudentsByAges(min,max)); // два параметра
+        return ResponseEntity.badRequest().build();
+    }
+
+    @GetMapping("/{id}/faculty")
+    public ResponseEntity<FacultyDTO> getFacultyByStudentId(@PathVariable Long id) {
+        FacultyDTO facultyDTO = studentService.getFacultyByStudentId(id);
+        return ResponseEntity.ok(facultyDTO);
     }
 
 }
