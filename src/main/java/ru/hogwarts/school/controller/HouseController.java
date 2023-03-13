@@ -3,17 +3,9 @@ package ru.hogwarts.school.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import ru.hogwarts.school.DTO.FacultyDTO;
-import ru.hogwarts.school.DTO.StudentDTO;
-import ru.hogwarts.school.model.Faculty;
+import ru.hogwarts.school.DTO.*;
 import ru.hogwarts.school.service.HouseService;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
-import java.util.Optional;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
-
+import java.util.*;
 
 @RestController
 @RequestMapping("/faculty")

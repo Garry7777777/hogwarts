@@ -33,19 +33,22 @@ public class StudentService {
 
 
     public Collection<StudentDTO> getStudents(){
-        return studentRepository.findAll().stream().map(StudentDTO::fromStudent).collect(Collectors.toList());
+        return studentRepository.findAll()
+                .stream().map(StudentDTO::fromStudent).collect(Collectors.toList());
     }
     public Collection<StudentDTO> getStudentsByAge(int age){
-        return studentRepository.findByAge(age).stream().map(StudentDTO::fromStudent).collect(Collectors.toList());
+        return studentRepository.findByAge(age)
+                .stream().map(StudentDTO::fromStudent).collect(Collectors.toList());
     }
     public Collection<StudentDTO> getStudentsByAges(int min, int max){
-        return studentRepository.findByAgeBetween(min, max).stream().map(StudentDTO::fromStudent).collect(Collectors.toList());
+        return studentRepository.findByAgeBetween(min, max)
+                .stream().map(StudentDTO::fromStudent).collect(Collectors.toList());
     }
 
 
     public FacultyDTO getFacultyByStudentId(Long id) {
         return FacultyDTO.fromFaculty(facultyRepository.findById(
-                StudentDTO.fromStudent(studentRepository.findById(id).get() ).getFacultyId() ).get());
+                StudentDTO.fromStudent(studentRepository.findById(id).get()).getFacultyId()).get());
 
     }
 }
