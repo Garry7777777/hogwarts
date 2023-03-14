@@ -27,9 +27,9 @@ public class AvatarService {
     private String avatarsDir;
 
     @Autowired
-    AvatarRepository avatarRepository;
+    private AvatarRepository avatarRepository;
     @Autowired
-    StudentService studentService;
+    private StudentService studentService;
 
     public void uploadAvatar(Long studentId, MultipartFile file) throws IOException {
         Student student = studentService.findStudent(studentId).toStudent();
