@@ -75,6 +75,7 @@ public class StudentController {
     @GetMapping("/pages")
     public ResponseEntity<Collection<StudentDTO>> getStudentsPages(@RequestParam Integer page,
                                                                    @RequestParam Integer size) {
+        size = size > 50 || size < 1  ? 50 : size;
         return ResponseEntity.ok(studentService.getStudentsPages(page, size));  // нет параметров
     }
 }
