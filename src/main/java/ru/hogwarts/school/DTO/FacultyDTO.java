@@ -1,6 +1,5 @@
 package ru.hogwarts.school.DTO;
 
-
 import lombok.Data;
 import org.springframework.beans.BeanUtils;
 import ru.hogwarts.school.model.Faculty;

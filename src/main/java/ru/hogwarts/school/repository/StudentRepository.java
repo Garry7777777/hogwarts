@@ -14,12 +14,10 @@ public interface StudentRepository extends JpaRepository<Student,Long>, PagingAn
     Collection<Student> findByAge(int age);
     Collection<Student> findByAgeBetween(int min, int max);
 
-
-
     @Query(value ="SELECT COUNT(s) FROM student AS s" , nativeQuery = true)
     Long countAll();
 
-    @Query(value ="SELECT AVG(s.age) FROM student AS s " , nativeQuery = true)
+    @Query(value ="SELECT AVG(s.age) FROM student AS s" , nativeQuery = true)
     Long countMidlife();
 
     @Query(value ="SELECT *  FROM student as s ORDER BY age ASC LIMIT 5" , nativeQuery = true)

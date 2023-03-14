@@ -1,12 +1,15 @@
 package ru.hogwarts.school.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-import ru.hogwarts.school.DTO.*;
-import ru.hogwarts.school.model.*;
-import ru.hogwarts.school.repository.*;
-import java.util.*;
+import ru.hogwarts.school.DTO.FacultyDTO;
+import ru.hogwarts.school.DTO.StudentDTO;
+import ru.hogwarts.school.model.Student;
+import ru.hogwarts.school.repository.FacultyRepository;
+import ru.hogwarts.school.repository.StudentRepository;
+
+import java.util.Collection;
 import java.util.stream.Collectors;
 
 
@@ -61,10 +64,9 @@ public class StudentService {
         return studentRepository.findYoungest()
                 .stream().map(StudentDTO::fromStudent).collect(Collectors.toList());}
 
-    public Collection<StudentDTO> getStudentsPages(Integer page, Integer size)  {
-        PageRequest pageRequest = PageRequest.of(page-1,size);
-        return studentRepository.findAll(pageRequest).getContent()
-                .stream().map(StudentDTO::fromStudent).collect(Collectors.toList());
+    public Collection<StudentDTO> getStudentsPages(Pageable pageable)  {
+        return studentRepository.findAll(pageable)
+                .getContent().stream().map(StudentDTO::fromStudent).collect(Collectors.toList());
     }
 
 
