@@ -66,8 +66,15 @@ public class StudentController {
     public ResponseEntity<Long> getMidlifeStudents(){
         return ResponseEntity.ok(studentService.countStudentsMidlife());
     }
+
     @GetMapping("/youngest")
     public ResponseEntity<Collection<StudentDTO>> getYoungestStudents(){
         return  ResponseEntity.ok(studentService.findYoungestStudents());
+    }
+
+    @GetMapping("/pages")
+    public ResponseEntity<Collection<StudentDTO>> getStudentsPages(@RequestParam Integer page,
+                                                                   @RequestParam Integer size) {
+        return ResponseEntity.ok(studentService.getStudentsPages(page, size));  // нет параметров
     }
 }

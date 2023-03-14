@@ -15,7 +15,7 @@ import java.nio.file.*;
 public class AvatarController {
 
         @Autowired
-        AvatarService avatarService;
+        private AvatarService avatarService;
 
         @PostMapping(value = "/{id}/avatar", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
         public ResponseEntity<String> uploadCover(@PathVariable Long id,
