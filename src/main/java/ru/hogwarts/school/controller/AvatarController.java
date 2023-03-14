@@ -38,7 +38,8 @@ public class AvatarController {
         public void downloadCover(@PathVariable Long id, HttpServletResponse response) throws IOException {
             Avatar avatar = avatarService.findAvatar(id);
             Path path = Path.of(avatar.getFilePath());
-            try (InputStream is = Files.newInputStream(path);
+            try (
+                 InputStream is = Files.newInputStream(path);
                  OutputStream os = response.getOutputStream()
             ) {
                 response.setContentType(avatar.getMediaType());
