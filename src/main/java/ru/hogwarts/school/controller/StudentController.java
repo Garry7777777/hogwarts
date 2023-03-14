@@ -3,8 +3,10 @@ package ru.hogwarts.school.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import ru.hogwarts.school.DTO.*;
+import ru.hogwarts.school.DTO.FacultyDTO;
+import ru.hogwarts.school.DTO.StudentDTO;
 import ru.hogwarts.school.service.StudentService;
+
 import java.util.Collection;
 
 @RestController
@@ -55,4 +57,17 @@ public class StudentController {
         return ResponseEntity.ok(studentService.getFacultyByStudentId(id));
     }
 
+    @GetMapping("/count")
+    public ResponseEntity<Long> getNumberStudents(){
+        return ResponseEntity.ok(studentService.countAllStudents());
+    }
+
+    @GetMapping("/midlife")
+    public ResponseEntity<Long> getMidlifeStudents(){
+        return ResponseEntity.ok(studentService.countStudentsMidlife());
+    }
+    @GetMapping("/youngest")
+    public ResponseEntity<Collection<StudentDTO>> getYoungestStudents(){
+        return  ResponseEntity.ok(studentService.findYoungestStudents());
+    }
 }

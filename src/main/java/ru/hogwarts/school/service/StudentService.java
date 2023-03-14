@@ -45,10 +45,19 @@ public class StudentService {
                 .stream().map(StudentDTO::fromStudent).collect(Collectors.toList());
     }
 
-
     public FacultyDTO getFacultyByStudentId(Long id) {
         return FacultyDTO.fromFaculty(facultyRepository.findById(
                 StudentDTO.fromStudent(studentRepository.findById(id).get()).getFacultyId()).get());
-
     }
+
+    public Long countAllStudents(){
+        return studentRepository.countAll();
+    }
+    public Long countStudentsMidlife(){
+        return studentRepository.countMidlife();
+    }
+    public Collection<StudentDTO> findYoungestStudents(){
+        return studentRepository.findYoungest()
+                .stream().map(StudentDTO::fromStudent).collect(Collectors.toList());}
+
 }
