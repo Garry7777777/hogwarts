@@ -14,9 +14,9 @@ import java.util.stream.Collectors;
 public class StudentService {
 
     @Autowired
-    StudentRepository studentRepository;
+    private StudentRepository studentRepository;
     @Autowired
-    FacultyRepository facultyRepository;
+    private FacultyRepository facultyRepository;
 
     public StudentDTO createStudent(StudentDTO studentDTO){
         Student student = studentDTO.toStudent();
