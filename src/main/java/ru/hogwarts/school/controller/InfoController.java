@@ -1,8 +1,11 @@
 package ru.hogwarts.school.controller;
 
+import lombok.AllArgsConstructor;
+import lombok.Data;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.web.bind.annotation.*;
-import ru.hogwarts.school.model.AppInfo;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/appinfo")
@@ -16,7 +19,16 @@ public class InfoController {
     private String environment;
 
     @GetMapping
-    public AppInfo getAppInfo(){
+    public Object getAppInfo(){
+
+        @Data
+        @AllArgsConstructor
+        class AppInfo {
+            private String appName ;
+            private String appVersion;
+            private String appEnvironment;
+        }
+
         return new AppInfo(name, version, environment);
     }
 }
