@@ -8,6 +8,9 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/appinfo")
 public class InfoController {
 
+    @Data @AllArgsConstructor
+    static class AppInfo {String appName, appVersion, appEnvironment;}
+
     @Value("${app.info.name: hogwarts-school}")
     private String name ;
     @Value("${app.info.version: 0.0.1}")
@@ -16,11 +19,7 @@ public class InfoController {
     private String environment;
 
     @GetMapping
-    public Object getAppInfo(){
-
-        @Data @AllArgsConstructor
-        class AppInfo {String appName, appVersion, appEnvironment;}
-
-        return new AppInfo(name, version, environment);
+    public AppInfo getAppInfo(){
+        return  new AppInfo(name, version, environment);
     }
 }
