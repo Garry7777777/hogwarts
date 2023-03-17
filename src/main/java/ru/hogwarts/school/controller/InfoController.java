@@ -18,13 +18,8 @@ public class InfoController {
     @GetMapping
     public Object getAppInfo(){
 
-        @Data
-        @AllArgsConstructor
-        class AppInfo {
-            private String appName ;
-            private String appVersion;
-            private String appEnvironment;
-        }
+        @Data @AllArgsConstructor
+        class AppInfo {String appName, appVersion, appEnvironment;}
 
         return new AppInfo(name, version, environment);
     }
