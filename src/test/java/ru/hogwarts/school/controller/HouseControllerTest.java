@@ -9,29 +9,24 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.web.servlet.MockMvc;
+import org.testcontainers.junit.jupiter.Testcontainers;
 import ru.hogwarts.school.model.Faculty;
-import ru.hogwarts.school.model.Student;
 import ru.hogwarts.school.repository.FacultyRepository;
-import ru.hogwarts.school.repository.StudentRepository;
 import org.springframework.http.MediaType;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
-import static org.junit.jupiter.api.Assertions.*;
-
 @SpringBootTest
 @AutoConfigureMockMvc
+@Testcontainers
 class HouseControllerTest {
 
     @Autowired
     MockMvc mockMvc;
     @Autowired
     private FacultyRepository facultyRepository;
-    @Autowired
-    private StudentRepository studentRepository;
 
     private Faculty faculty = new Faculty();
-    private Student student = new Student();
     private JSONObject houseJson = new JSONObject();
 
     @BeforeEach
@@ -39,16 +34,10 @@ class HouseControllerTest {
         faculty.setName("fac");
         faculty.setColor("cool");
         facultyRepository.save(faculty);
-
-        student.setName("Ann");
-        student.setAge(15);
-        student.setFaculty(faculty);
-        studentRepository.save(student);
     }
 
     @AfterEach
     void tearDown() {
-        studentRepository.deleteAll();
         facultyRepository.deleteAll();
     }
 
@@ -56,7 +45,7 @@ class HouseControllerTest {
     void createFaculty() throws Exception {
         mockMvc.perform(post("/faculty")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(houseJson
+                        .content( houseJson
                                 .put("id",0)
                                 .put("name","test")
                                 .put("color", "anyColor")
@@ -71,7 +60,6 @@ class HouseControllerTest {
 
     @Test
     void deleteFaculty() throws Exception {
-        studentRepository.deleteAll();
         mockMvc.perform(delete("/faculty/" + faculty.getId()))
                 .andExpect(status().isOk());
     }
@@ -88,14 +76,16 @@ class HouseControllerTest {
     void getFacultiesByColor() throws Exception {
         mockMvc.perform(get("/faculty?color=" + faculty.getColor()))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$").isArray());
+                .andExpect(jsonPath("$").isArray())
+                .andExpect(jsonPath("$[0].color").value(faculty.getColor()));
     }
 
     @Test
     void getFacultiesByName() throws Exception {
         mockMvc.perform(get("/faculty?name=" + faculty.getName()))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$").isArray());
+                .andExpect(jsonPath("$").isArray())
+                .andExpect(jsonPath("$[0].name").value(faculty.getName()));
     }
     @Test
     void getStudentsByFacultyId() throws Exception {

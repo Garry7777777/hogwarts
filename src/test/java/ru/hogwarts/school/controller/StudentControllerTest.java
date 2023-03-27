@@ -8,6 +8,7 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
+import org.testcontainers.junit.jupiter.Testcontainers;
 import ru.hogwarts.school.model.*;
 import ru.hogwarts.school.repository.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
@@ -16,6 +17,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @SpringBootTest
 @AutoConfigureMockMvc
+@Testcontainers
 class StudentControllerTest {
 
     @Autowired
@@ -107,7 +109,9 @@ class StudentControllerTest {
     void getStudentsByAge() throws Exception {
         mockMvc.perform(get("/student?age=" + student.getAge()))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$").isArray());
+                .andExpect(jsonPath("$").isArray())
+                .andExpect(jsonPath("$[0].age").value(student.getAge()));
+
     }
 
     @Test
@@ -131,7 +135,8 @@ class StudentControllerTest {
     void getYoungestStudents() throws Exception {
         mockMvc.perform(get("/student/youngest"))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$").isArray());
+                .andExpect(jsonPath("$").isArray())
+                .andExpect(jsonPath("$[0].age").value(student.getAge()));
     }
 
 }
