@@ -28,7 +28,9 @@ public class StudentService {
 
     public StudentDTO editStudent(StudentDTO studentDTO){
         log.info(" Вызов метода editStudent");
-        return StudentDTO.fromStudent(studentRepository.save(studentDTO.toStudent()));
+        Student student = studentDTO.toStudent();
+        student.setFaculty(facultyRepository.findById(studentDTO.getFacultyId()).get());
+        return StudentDTO.fromStudent(studentRepository.save(student));
     }
 
     public StudentDTO findStudent(long id) {

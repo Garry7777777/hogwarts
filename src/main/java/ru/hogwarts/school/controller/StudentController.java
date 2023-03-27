@@ -23,7 +23,7 @@ public class StudentController {
         return ResponseEntity.ok(studentService.createStudent(studentDTO));
     }
 
-    @PutMapping
+    @PatchMapping
     public ResponseEntity<StudentDTO> editStudent(@RequestBody StudentDTO studentDTO ) {
         StudentDTO editStudent = studentService.editStudent(studentDTO);
         if (editStudent == null) return ResponseEntity.badRequest().build();

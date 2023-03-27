@@ -2,7 +2,7 @@
 
 -- changeset garry:1
 CREATE TABLE faculty(
-    id      BIGINT NOT NULL PRIMARY KEY,
+    id      BIGSERIAL  NOT NULL PRIMARY KEY,
     color   VARCHAR(255),
     name    VARCHAR(255)
 );

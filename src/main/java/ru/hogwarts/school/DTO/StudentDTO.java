@@ -1,6 +1,7 @@
 package ru.hogwarts.school.DTO;
 
 import lombok.Data;
+import org.springframework.beans.BeanUtils;
 import ru.hogwarts.school.model.Student;
 
 @Data
@@ -22,9 +23,10 @@ public class StudentDTO {
 
     public Student toStudent(){
         Student student = new Student();
-        student.setId(this.getId());
-        student.setName(this.getName());
-        student.setAge(this.getAge());
+//        student.setId(this.getId());
+//        student.setName(this.getName());
+//        student.setAge(this.getAge());
+        BeanUtils.copyProperties(this, student);
         return student;
     }
 }

@@ -2,7 +2,7 @@
 
 -- changeset garry:1
 CREATE TABLE student (
-    id          BIGINT NOT NULL PRIMARY KEY,
+    id          BIGSERIAL  NOT NULL PRIMARY KEY,
     age         INTEGER NOT NULL ,
     name        VARCHAR(255),
     faculty_id  BIGINT REFERENCES faculty
